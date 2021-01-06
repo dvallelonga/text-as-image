@@ -4,6 +4,7 @@ import path from "path";
 
 // Controllers (route handlers)
 import * as homeController from "./controllers/home";
+import * as examplesController from "./controllers/examples";
 import * as apiController from "./controllers/api";
 
 // Create Express server
@@ -24,6 +25,11 @@ app.use(
  * Primary app routes.
  */
 app.get("/", homeController.index);
+
+/**
+ * Examples routes.
+ */
+app.get("/examples", examplesController.getExamples);
 
 /**
  * API examples routes.
