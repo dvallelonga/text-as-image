@@ -12,3 +12,13 @@ export const getApi = (req: Request, res: Response) => {
         title: "API Examples"
     });
 };
+
+
+/**
+ * Upload source text file (or zip) and a source image file.
+ * @route POST /api/text
+ */
+export const postText = async (req: Request, res: Response, next: NextFunction) => {
+    console.log("Request received");
+};
+

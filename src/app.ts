@@ -32,7 +32,8 @@ app.get("/", homeController.index);
 app.get("/examples", examplesController.getExamples);
 
 /**
- * API examples routes.
+ * API routes.
  */
 app.get("/api", apiController.getApi);
+app.post("/api/text", apiController.postText);
 export default app;
