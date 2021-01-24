@@ -4,14 +4,14 @@ block content
   h1 Text To Image
   p.lead Transform text into an image.
   hr
-  form(action="/api/text" method="post")
+  form(action="/api/text" method="post" enctype="multipart/form-data")
     .form-group
       label Source Text
-      input.form-control-file(type="file" name="text" aria-describedby="textHelp")
+      input.form-control-file(type="file" name="source_text" aria-describedby="textHelp")
       small.form-text.text-muted(id="textHelp") Text to be transformed
     .form-group
       label Source Image
-      input.form-control-file(type="file" name="image" aria-describedby="imageHelp")
+      input.form-control-file(type="file" name="source_image" aria-describedby="imageHelp")
       small.form-text.text-muted(id="imageHelp") Image to transform text into
     button.btn.btn-primary(type="submit") Transform
 

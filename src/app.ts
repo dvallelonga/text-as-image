@@ -1,4 +1,5 @@
 import express from "express";
+import multer  from "multer";
 import bodyParser from "body-parser";
 import path from "path";
 
@@ -9,6 +10,10 @@ import * as apiController from "./controllers/api";
 
 // Create Express server
 const app = express();
+
+// Create file upload handler
+const upload = multer();
+
 
 // Express configuration
 app.set("port", process.env.PORT || 3000);
@@ -35,5 +40,10 @@ app.get("/examples", examplesController.getExamples);
  * API routes.
  */
 app.get("/api", apiController.getApi);
-app.post("/api/text", apiController.postText);
+
+const fileUploadMiddleware = upload.fields([
+    { name: 'source_text', maxCount: 1 },
+    { name: 'source_image', maxCount: 1 }
+]);
+app.post("/api/text", fileUploadMiddleware, apiController.postText);
 export default app;
