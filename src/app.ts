@@ -42,8 +42,8 @@ app.get("/examples", examplesController.getExamples);
 app.get("/api", apiController.getApi);
 
 const fileUploadMiddleware = upload.fields([
-    { name: 'source_text', maxCount: 1 },
-    { name: 'source_image', maxCount: 1 }
+    { name: "source_text", maxCount: 1 },
+    { name: "source_image", maxCount: 1 }
 ]);
 app.post("/api/text", fileUploadMiddleware, apiController.postText);
 export default app;

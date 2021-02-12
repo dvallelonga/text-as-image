@@ -3,7 +3,7 @@ import app from "../../src/app";
 import {
     ReasonPhrases,
     StatusCodes,
-} from 'http-status-codes';
+} from "http-status-codes";
 
 
 describe("GET /api", () => {
@@ -22,17 +22,17 @@ describe("POST /api/text", () => {
 
     it("should return 200 OK when sourceText and sourceImage are sent in request", () => {
         return request(app).post("/api/text")
-            .attach('source_text', 'test/fixtures/source-text.txt')
-            .attach('source_image', 'test/fixtures/source-image.png')
+            .attach("source_text", "test/fixtures/text/source-text.txt")
+            .attach("source_image", "test/fixtures/images/source-image.png")
             .expect(StatusCodes.OK);
     });
 
     it("should return names of uploaded source files in response body of successful requests", (done) => {
-        let sourceTextFileName = "source-text.txt";
-        let sourceImageFileName = "source-image.png";
+        const sourceTextFileName = "source-text.txt";
+        const sourceImageFileName = "source-image.png";
         return request(app).post("/api/text")
-            .attach('source_text', `test/fixtures/${sourceTextFileName}`)
-            .attach('source_image', `test/fixtures/${sourceImageFileName}`)
+            .attach("source_text", `test/fixtures/text/${sourceTextFileName}`)
+            .attach("source_image", `test/fixtures/images/${sourceImageFileName}`)
             .expect(StatusCodes.OK)
             .end(function(err, res) {
                 if (err) return done(err);

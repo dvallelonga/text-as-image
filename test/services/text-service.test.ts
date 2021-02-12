@@ -5,9 +5,9 @@ import {
   GridDimensions,
   readContentFromTextUpload,
   stripWhitespace
-} from '../../src/services/text-service';
-import fs from 'fs';
-import { ImageDimensions } from '../../src/services/image-service';
+} from "../../src/services/text-service";
+import fs from "fs";
+import { ImageDimensions } from "../../src/services/image-service";
 
 
 const EXPECTED_SINGLE_TEXT_FILE_CONTENT = `Lorem ipsum dolor sit amet, 
@@ -20,7 +20,7 @@ consectetur        adipiscing elit.
 \t\tClass aptent\ntaciti\rsociosqu ad litora 
 torquent per\tconubia nostra, per inceptos himenaeos.       `;
 
-const EXPECTED_TEXT_WITH_WHITESPACE_CHARS_STRIPPED = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dapibus dignissim ipsum vitae tempor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.`;
+const EXPECTED_TEXT_WITH_WHITESPACE_CHARS_STRIPPED = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dapibus dignissim ipsum vitae tempor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.";
 
 const EXPECTED_23_CHAR_MATRIX_6_X_4: CharacterMatrix = [
   "Lorem ",
@@ -49,14 +49,14 @@ const EXPECTED_25_CHAR_MATRIX_6_X_4: CharacterMatrix = [
 describe("Parsing of Upload Text", () => {
 
   it("should process an upload containing a single text file", async () => {
-    let textUploadFile: Buffer = fs.readFileSync('test/fixtures/source-text.txt');
+    const textUploadFile: Buffer = fs.readFileSync("test/fixtures/text/source-text.txt");
 
-    let textFileContent: string = await readContentFromTextUpload(textUploadFile);
+    const textFileContent: string = await readContentFromTextUpload(textUploadFile);
     expect(textFileContent).toEqual(EXPECTED_SINGLE_TEXT_FILE_CONTENT);
   });
 
   it("should remove extra whitespace characters from text", async () => {
-    let whitespaceStripped: string = await stripWhitespace(TEXT_WITH_WHITESPACE_CHARS);
+    const whitespaceStripped: string = await stripWhitespace(TEXT_WITH_WHITESPACE_CHARS);
     expect(whitespaceStripped).toEqual(EXPECTED_TEXT_WITH_WHITESPACE_CHARS_STRIPPED);
   });
 
@@ -74,7 +74,7 @@ describe("Formatting Text Matrix", () => {
         const INPUT_CHAR_COUNT = 24;
         const textInput: string = TEXT.substr(0, INPUT_CHAR_COUNT);
 
-        let characterMatrix: CharacterMatrix = buildCharacterMatrix(textInput, IMAGE_DIMENSIONS_3_X_2);
+        const characterMatrix: CharacterMatrix = buildCharacterMatrix(textInput, IMAGE_DIMENSIONS_3_X_2);
 
         expect(characterMatrix).toEqual(EXPECTED_24_CHAR_MATRIX_6_X_4);
       });
@@ -85,7 +85,7 @@ describe("Formatting Text Matrix", () => {
         const INPUT_CHAR_COUNT = 23;
         const textInput: string = TEXT.substr(0, INPUT_CHAR_COUNT);
 
-        let characterMatrix: CharacterMatrix = buildCharacterMatrix(textInput, IMAGE_DIMENSIONS_3_X_2);
+        const characterMatrix: CharacterMatrix = buildCharacterMatrix(textInput, IMAGE_DIMENSIONS_3_X_2);
 
         expect(characterMatrix).toEqual(EXPECTED_23_CHAR_MATRIX_6_X_4);
       });
@@ -96,7 +96,7 @@ describe("Formatting Text Matrix", () => {
         const INPUT_CHAR_COUNT = 25;
         const textInput: string = TEXT.substr(0, INPUT_CHAR_COUNT);
 
-        let characterMatrix: CharacterMatrix = buildCharacterMatrix(textInput, IMAGE_DIMENSIONS_3_X_2);
+        const characterMatrix: CharacterMatrix = buildCharacterMatrix(textInput, IMAGE_DIMENSIONS_3_X_2);
 
         expect(characterMatrix).toEqual(EXPECTED_25_CHAR_MATRIX_6_X_4);
       });
@@ -148,8 +148,8 @@ describe("Formatting Text Matrix", () => {
         const PRECISION_AFTER_DECIMAL = 2;
         const INPUT_IMAGE_ASPECT_RATIO = (scenario.input.imageDimensions.height / scenario.input.imageDimensions.width).toFixed(PRECISION_AFTER_DECIMAL);
 
-        let gridDimensions: GridDimensions = calculateGridDimensionsToFitCellCount(scenario.input.imageDimensions, scenario.input.charCount);
-        let gridAspectRatio = (gridDimensions.rows / gridDimensions.columns).toFixed(PRECISION_AFTER_DECIMAL);
+        const gridDimensions: GridDimensions = calculateGridDimensionsToFitCellCount(scenario.input.imageDimensions, scenario.input.charCount);
+        const gridAspectRatio = (gridDimensions.rows / gridDimensions.columns).toFixed(PRECISION_AFTER_DECIMAL);
 
         expect(gridDimensions).toEqual(scenario.expectedOutput.gridDimensions);
         expect(gridDimensions.columns * gridDimensions.rows).toBeGreaterThanOrEqual(scenario.input.charCount);
