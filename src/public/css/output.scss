@@ -1,0 +1,17 @@
+
+.output-page {
+  background: lavender;
+  padding: 10px;
+}
+
+.text-output {
+  font-family: monospace;
+  padding: 10px;
+  border-style: inset;
+  background: white;
+  width: max-content; // ensures long lines don't wrap
+  font-size: 5px;
+  line-height: 0.66em;
+}
+
+
