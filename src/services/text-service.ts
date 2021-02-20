@@ -1,5 +1,7 @@
-import { ImageDimensions } from "./image-service";
+import { Image, ImageDimensions } from "./image-service";
 
+// TDOO: Look into fixing this so it doesn't require disabling the eslint rule
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CharacterMatrix extends Array<string> {};
 
 export interface GridDimensions {
@@ -7,28 +9,40 @@ export interface GridDimensions {
   rows: number;
 };
 
-export async function readContentFromTextUpload(sourceTextUploadFileBuffer: Buffer): Promise<string>{
-  return sourceTextUploadFileBuffer.toString();
+export class Text {
+  private buffer: Buffer;
+  private value: string;
+
+  public static stripWhitespace(text: string): string {
+    const strippedText: string = text
+      .trim()
+      // Condense extra whitespace characters (same characters found
+      // by String.trim()) in a string by replacing each run of one
+      // or more whitespace character with a single Space character.
+      .replace(/[\s\uFEFF\xA0]+/g, " ");
+  
+    return strippedText;
+  }
+
+  constructor(sourceTextUploadFileBuffer: Buffer){
+    this.buffer = sourceTextUploadFileBuffer;
+    this.value = this.buffer.toString();
+  }
+
+  public getValue(): string {
+    return this.value;
+  }
+  
 }
 
-export function stripWhitespace(text: string): string {
-  let strippedText: string = text
-    .trim()
-    // Condense extra whitespace characters (same characters found
-    // by String.trim()) in a string by replacing each run of one
-    // or more whitespace character with a single Space character.
-    .replace(/[\s\uFEFF\xA0]+/g, ' ');
-
-  return strippedText;
-}
 
 export function buildCharacterMatrix(text: string, imageDimensions: ImageDimensions): CharacterMatrix {
-  let charMatrix: CharacterMatrix = [];
-  let { rows: rowCount, columns: colCount } = calculateGridDimensionsToFitCellCount(imageDimensions, text.length);
+  const charMatrix: CharacterMatrix = [];
+  const { rows: rowCount, columns: colCount } = calculateGridDimensionsToFitCellCount(imageDimensions, text.length);
 
   while(charMatrix.length < rowCount){
-    let textStartIndex: number = charMatrix.length * colCount;
-    let rowChars: string = text.substr(textStartIndex, colCount);
+    const textStartIndex: number = charMatrix.length * colCount;
+    const rowChars: string = text.substr(textStartIndex, colCount);
     charMatrix[charMatrix.length] = rowChars;
   }
 
@@ -48,9 +62,9 @@ export function buildCharacterMatrix(text: string, imageDimensions: ImageDimensi
  */
 export function calculateGridDimensionsToFitCellCount(gridDimensions: ImageDimensions, cellCount: number): GridDimensions {
 
-  let aspectRatio = gridDimensions.height / gridDimensions.width; // e.g. 900 / 1200 = 0.75
+  const aspectRatio = gridDimensions.height / gridDimensions.width; // e.g. 900 / 1200 = 0.75
 
-  let columns = Math.round( Math.sqrt(cellCount / aspectRatio) );
+  const columns = Math.round( Math.sqrt(cellCount / aspectRatio) );
   let rows = Math.round(columns * aspectRatio);
 
   // Add one more row if we'll overflow final row
@@ -59,7 +73,7 @@ export function calculateGridDimensionsToFitCellCount(gridDimensions: ImageDimen
   }
 
   return {
-    columns: columns,
-    rows: rows
+    columns,
+    rows
   };
 }

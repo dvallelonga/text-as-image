@@ -1,10 +1,9 @@
 import {
+  Text,
   buildCharacterMatrix,
   calculateGridDimensionsToFitCellCount,
   CharacterMatrix,
   GridDimensions,
-  readContentFromTextUpload,
-  stripWhitespace
 } from "../../src/services/text-service";
 import fs from "fs";
 import { ImageDimensions } from "../../src/services/image-service";
@@ -50,13 +49,14 @@ describe("Parsing of Upload Text", () => {
 
   it("should process an upload containing a single text file", async () => {
     const textUploadFile: Buffer = fs.readFileSync("test/fixtures/text/source-text.txt");
+    const text: Text = new Text(textUploadFile);
 
-    const textFileContent: string = await readContentFromTextUpload(textUploadFile);
+    const textFileContent: string = text.getValue();
     expect(textFileContent).toEqual(EXPECTED_SINGLE_TEXT_FILE_CONTENT);
   });
 
   it("should remove extra whitespace characters from text", async () => {
-    const whitespaceStripped: string = await stripWhitespace(TEXT_WITH_WHITESPACE_CHARS);
+    const whitespaceStripped: string = await Text.stripWhitespace(TEXT_WITH_WHITESPACE_CHARS);
     expect(whitespaceStripped).toEqual(EXPECTED_TEXT_WITH_WHITESPACE_CHARS_STRIPPED);
   });
 
