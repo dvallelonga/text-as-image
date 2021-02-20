@@ -10,34 +10,43 @@ export interface RGBA {
   b: number; // blue channel
   a: number; // alpha channel
 }
-export async function getImageDimensions(imageBuffer: Buffer): Promise<ImageDimensions> {
-  return Jimp.read(imageBuffer)
-  .then(image => {
-    const imageDimensions: ImageDimensions = {
-      width: image.bitmap.width,
-      height: image.bitmap.height
-    };
 
-    return imageDimensions;
-  })
-  .catch(err => {
-    // Handle an exception.
-    throw err;
-  });
-}
+export class Image {
+  private buffer: Buffer;
+  constructor(imageBuffer: Buffer){
+    this.buffer = imageBuffer;
+  }
 
-export async function getPixelColorAtImageCoordinate(imageBuffer: Buffer, xCoord: number, yCoord: number): Promise<RGBA> {
+  public async getDimensions(): Promise<ImageDimensions> {
+    return Jimp.read(this.buffer)
+    .then(image => {
+      const imageDimensions: ImageDimensions = {
+        width: image.bitmap.width,
+        height: image.bitmap.height
+      };
+  
+      return imageDimensions;
+    })
+    .catch(err => {
+      // Handle an exception.
+      throw err;
+    });
+  }
 
-  return Jimp.read(imageBuffer)
-  .then(image => {
+  public async getPixelColorAtCoordinate(xCoord: number, yCoord: number): Promise<RGBA> {
 
-    let rgba: RGBA = Jimp.intToRGBA(image.getPixelColor(xCoord, yCoord));
-
-    return rgba;
-  })
-  .catch(err => {
-    // Handle an exception.
-    throw err;
-  });
-
+    return Jimp.read(this.buffer)
+    .then(image => {
+  
+      const rgba: RGBA = Jimp.intToRGBA(image.getPixelColor(xCoord, yCoord));
+  
+      return rgba;
+    })
+    .catch(err => {
+      // Handle an exception.
+      throw err;
+    });
+  
+  }
+  
 }

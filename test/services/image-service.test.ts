@@ -1,7 +1,6 @@
 import {
-  getImageDimensions,
+  Image,
   ImageDimensions,
-  getPixelColorAtImageCoordinate,
   RGBA
 } from "../../src/services/image-service";
 import fs from "fs";
@@ -16,9 +15,11 @@ describe("Parsing of Upload Image", () => {
         height: 800
       };
 
-      const image: Buffer = fs.readFileSync(SOURCE_IMAGE_PATH);
+      const imageBuffer: Buffer = fs.readFileSync(SOURCE_IMAGE_PATH);
+      const image: Image = new Image(imageBuffer);
 
-      const imageDimensions: ImageDimensions = await getImageDimensions(image);
+
+      const imageDimensions: ImageDimensions = await image.getDimensions();
       expect(imageDimensions).toEqual(expectedImageDimensions);
     });
   });
@@ -29,9 +30,10 @@ describe("Inspecting Image", () => {
     it("should get the pixel color at the given image coordinate", async () => {
       const SOURCE_IMAGE_PATH = "test/fixtures/images/rgba-sample.png";
 
-      const image: Buffer = fs.readFileSync(SOURCE_IMAGE_PATH);
+      const imageBuffer: Buffer = fs.readFileSync(SOURCE_IMAGE_PATH);
+      const image: Image = new Image(imageBuffer);
 
-      let coordsConfig = [
+      const coordsConfig = [
         // red
         {
           coord: { x: 0, y: 256 },
@@ -55,7 +57,7 @@ describe("Inspecting Image", () => {
       ];
 
       return Promise.all(coordsConfig.map(async (config) => {
-        let rgba: RGBA = await getPixelColorAtImageCoordinate(image, config.coord.x, config.coord.y);
+        const rgba: RGBA = await image.getPixelColorAtCoordinate(config.coord.x, config.coord.y);
         expect(rgba).toEqual(config.expectedRGBA);
       }));
 
